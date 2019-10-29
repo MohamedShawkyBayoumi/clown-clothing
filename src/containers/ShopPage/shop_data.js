@@ -1,8 +1,4 @@
-import React from "react";
-import "./homepage.scss";
-import Directory from "../../components/Directory/Directory";
-
-const SHOP_DATA = [
+export const SHOP_DATA = [
     {
       id: 1,
       title: 'Hats',
@@ -249,13 +245,3 @@ const SHOP_DATA = [
       ]
     }
   ]
-
-const HomePage = () => {
-    return (
-        <div className="homepage">
-            <Directory />
-        </div>
-    );
-}
-
-export default HomePage;
