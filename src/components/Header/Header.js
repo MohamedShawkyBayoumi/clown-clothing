@@ -2,12 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
+import { ReactComponent as CartIcon } from "../../assets/shopping-bag.svg";
+import CartDropDown from "../CartDropDown/CartDropDown";
+import { toggleCartHidden } from "../../redux/actions/cartActions";
 
 import { connect } from "react-redux";
 
 import "./Header.scss";
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, toggleCartHidden, hidden }) => {
     console.log(currentUser);
     return (
         <div className="header">
@@ -22,13 +25,23 @@ const Header = ({ currentUser }) => {
                 ) : (
                     <Link to="signin" className="option">SIGN IN</Link>
                 )}
+                <div className="cart-icon" onClick={toggleCartHidden}>
+                    <CartIcon className="shopping-icon" />
+                    <span className="item-count">0</span>
+                </div>
             </div>
+            {!hidden && <CartDropDown />}
         </div>
     );
 }
 
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser
+const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => ({
+    currentUser,
+    hidden
 });
 
-export default connect(mapStateToProps, null)(Header);
+const mapDispatchToProps = dispatch => ({
+    toggleCartHidden: () => dispatch(toggleCartHidden())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
