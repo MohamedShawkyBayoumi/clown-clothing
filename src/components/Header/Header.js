@@ -6,7 +6,10 @@ import { ReactComponent as CartIcon } from "../../assets/shopping-bag.svg";
 import CartDropDown from "../CartDropDown/CartDropDown";
 import { toggleCartHidden } from "../../redux/actions/cartActions";
 
-import { selectCartItemsCount } from "../../utils/cartSelectors";
+import { createStructuredSelector } from "reselect";
+
+import { selectCartItemsCount, selectCartHidden } from "../../utils/Memoization/cartSelectors";
+import { selectCurrentUser } from "../../utils/Memoization/userSelectors";
 
 import { connect } from "react-redux";
 
@@ -37,10 +40,10 @@ const Header = ({ currentUser, toggleCartHidden, hidden, itemCount }) => {
     );
 }
 
-const mapStateToProps = (state) => ({
-    currentUser: state.user.currentUser,
-    hidden: state.cart.hidden,
-    itemCount: selectCartItemsCount(state)
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden,
+    itemCount: selectCartItemsCount
 });
 
 const mapDispatchToProps = dispatch => ({
