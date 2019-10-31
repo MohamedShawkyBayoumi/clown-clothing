@@ -6,11 +6,13 @@ import { ReactComponent as CartIcon } from "../../assets/shopping-bag.svg";
 import CartDropDown from "../CartDropDown/CartDropDown";
 import { toggleCartHidden } from "../../redux/actions/cartActions";
 
+import { selectCartItemsCount } from "../../utils/cartSelectors";
+
 import { connect } from "react-redux";
 
 import "./Header.scss";
 
-const Header = ({ currentUser, toggleCartHidden, hidden }) => {
+const Header = ({ currentUser, toggleCartHidden, hidden, itemCount }) => {
     console.log(currentUser);
     return (
         <div className="header">
@@ -27,7 +29,7 @@ const Header = ({ currentUser, toggleCartHidden, hidden }) => {
                 )}
                 <div className="cart-icon" onClick={toggleCartHidden}>
                     <CartIcon className="shopping-icon" />
-                    <span className="item-count">0</span>
+                    <span className="item-count">{itemCount}</span>
                 </div>
             </div>
             {!hidden && <CartDropDown />}
@@ -35,9 +37,10 @@ const Header = ({ currentUser, toggleCartHidden, hidden }) => {
     );
 }
 
-const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => ({
-    currentUser,
-    hidden
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser,
+    hidden: state.cart.hidden,
+    itemCount: selectCartItemsCount(state)
 });
 
 const mapDispatchToProps = dispatch => ({
