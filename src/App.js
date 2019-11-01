@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import './App.css';
 import HomePage from "./containers/HomePage/HomePage";
 import ShopPage from "./containers/ShopPage/ShopPage";
+import CheckoutPage from "./containers/CheckoutPage/CheckoutPage";
+
 import Header from "./components/Header/Header";
 import { setCurrentUser } from "./redux/actions/userActions";
 
@@ -60,11 +62,11 @@ class App extends React.Component {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/shop" component={ShopPage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route exact path="/checkout" component={CheckoutPage} />
           <Route exact path="/signin" render={() => (
             currentUser ? <Redirect to="/" /> : <AuthContainerPage />
           )} />
-          {/* <Route exact path="/signup" component={SignUp} /> */}
         </Switch>
       </div>
     );
