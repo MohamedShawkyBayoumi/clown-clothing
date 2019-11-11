@@ -15,28 +15,30 @@ import { connect } from "react-redux";
 
 import "./Header.scss";
 
+import { HeaderContainer, LogoContainer, OptionsContainer, OptionDiv, OptionLink } from "./HeaderStyles";
+
 const Header = ({ currentUser, toggleCartHidden, hidden, itemCount }) => {
     console.log(currentUser);
     return (
-        <div className="header">
-            <Link className="logo-container" to="/">
+        <HeaderContainer>
+            <LogoContainer to="/">
                 <Logo className="logo" />
-            </Link>
-            <div className="options">
-                <Link className="option" to="/shop">SHOP</Link>
-                <Link className="option" to="/contact">CONTACT</Link>
+            </LogoContainer>
+            <OptionsContainer>
+                <OptionLink to="/shop">SHOP</OptionLink>
+                <OptionLink to="/contact">CONTACT</OptionLink>
                 {currentUser ? (
-                    <div className="option" onClick={() => auth.signOut()}>SIGN OUT</div>
+                    <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
                 ) : (
-                    <Link to="signin" className="option">SIGN IN</Link>
+                    <OptionLink to="signin">SIGN IN</OptionLink>
                 )}
                 <div className="cart-icon" onClick={toggleCartHidden}>
                     <CartIcon className="shopping-icon" />
                     <span className="item-count">{itemCount}</span>
                 </div>
-            </div>
+            </OptionsContainer>
             {!hidden && <CartDropDown />}
-        </div>
+        </HeaderContainer>
     );
 }
 

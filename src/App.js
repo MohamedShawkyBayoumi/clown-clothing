@@ -15,6 +15,8 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 import AuthContainerPage from "./containers/AuthContainerPage/AuthContainerPage";
 
+import { selectCollectionsForPreview } from "./utils/Memoization/shopSelectors";
+
 
 class App extends React.Component {
 
@@ -44,11 +46,11 @@ class App extends React.Component {
         })
       } else {
         setCurrentUser(userAuth);
+        // addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items }))); // to add objects dynamically into firebase database
       }
 
-      
 
-    });
+    }, error => console.log(error));
   }
 
   componentWillUnmount(){
