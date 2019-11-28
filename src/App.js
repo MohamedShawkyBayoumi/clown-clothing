@@ -7,15 +7,17 @@ import ShopPage from "./containers/ShopPage/ShopPage";
 import CheckoutPage from "./containers/CheckoutPage/CheckoutPage";
 
 import Header from "./components/Header/Header";
-import { setCurrentUser } from "./redux/actions/userActions";
+
 
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./utils/Memoization/userSelectors"
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+
 
 import AuthContainerPage from "./containers/AuthContainerPage/AuthContainerPage";
 
 import { selectCollectionsForPreview } from "./utils/Memoization/shopSelectors";
+
+import { checkUserSession } from "./redux/actions/userActions";
 
 
 class App extends React.Component {
@@ -28,29 +30,9 @@ class App extends React.Component {
 
   componentDidMount(){
 
-    const { setCurrentUser } = this.props;
+    const { checkUserSession } = this.props;
+    checkUserSession();
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-
-      if(userAuth){
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-              id: snapShot.id,
-              ...snapShot.data()
-          });
-          
-          
-          
-        })
-      } else {
-        setCurrentUser(userAuth);
-        // addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items }))); // to add objects dynamically into firebase database
-      }
-
-
-    }, error => console.log(error));
   }
 
   componentWillUnmount(){
@@ -81,7 +63,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  checkUserSession: () => dispatch(checkUserSession())
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
