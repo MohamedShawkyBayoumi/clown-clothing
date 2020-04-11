@@ -2,7 +2,7 @@ import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import axios from 'axios';
 
-const StripeCheckoutButton = ({ price }) => {
+const StripeCheckoutButton = ({ price, _clearCart, history }) => {
 
     const priceForStripe = price * 100; // Stripe needs the price in cents
     const publishablekey = "pk_test_BKmA5nqqcd3AdubdZKt2pDdZ00NsALvP7L";
@@ -20,6 +20,8 @@ const StripeCheckoutButton = ({ price }) => {
             });
 
             console.log('Payment successful');
+            _clearCart();
+            setTimeout(() => history.push('/'), 500);
         } catch (error) {
             console.log('Payment error: ', JSON.parse(error));
             alert('There is an issue with your payment. please sure you use the provided credit cart.')

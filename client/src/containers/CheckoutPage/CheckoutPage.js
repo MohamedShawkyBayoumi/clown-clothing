@@ -10,8 +10,9 @@ import StripeCheckoutButton from "../../components/FORM/StripeButton";
 
 import CheckoutHeaderBlock from "./CheckoutHeaderBlock";
 import CheckoutItem from "../../components/CheckoutItem/CheckoutItem";
+import { clearCart } from '../../redux/actions/cartActions';
 
-const CheckoutPage = ({ cartItems, total }) => (
+const CheckoutPage = ({ cartItems, total, _clearCart, history }) => (
     <div className="checkout-page">
         <div className="checkout-header">
             <CheckoutHeaderBlock 
@@ -41,7 +42,7 @@ const CheckoutPage = ({ cartItems, total }) => (
             <br />
             4242 4242 4242 4242 - Exp: 10/22 - CVV: 123
         </div>
-        <StripeCheckoutButton price={total} />
+        <StripeCheckoutButton price={total} _clearCart={_clearCart} history={history} />
     </div>
 );
 
@@ -50,4 +51,8 @@ const mapStateToProps = createStructuredSelector({
     total: selectCartTotal
 });
 
-export default connect(mapStateToProps, null)(CheckoutPage);
+const mapDispatchToProps = dispatch => ({
+    _clearCart: () => dispatch(clearCart())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);
